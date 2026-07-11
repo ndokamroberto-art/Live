@@ -237,6 +237,9 @@ html_content = '''<!DOCTYPE html>
             color: #fff;
             font-size: 12px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
         
         .comment-text {
@@ -249,12 +252,14 @@ html_content = '''<!DOCTYPE html>
         .verified-comment {
             display: inline-flex;
             align-items: center;
-            margin-left: 3px;
+            width: 10px;
+            height: 10px;
+            flex-shrink: 0;
         }
         
         .verified-comment svg {
-            width: 10px;
-            height: 10px;
+            width: 100%;
+            height: 100%;
             fill: #3897f0;
         }
         
@@ -584,92 +589,99 @@ html_content = '''<!DOCTYPE html>
             viewerEl.textContent = formatCount(viewerCount);
         }, 1500);
         
-        // ===== REALISTIC COMMENTS: CELEBRITIES + REGULAR PEOPLE =====
+        // ===== REAL CELEBRITY PROFILE PICS + GENERIC FOR REGULAR USERS =====
         const commentData = [
-            // AFRICAN CELEBRITIES
-            { user: 'burnaboygram', text: 'Big vibes only!', verified: true, region: 'africa', seed: 'burna' },
-            { user: 'wizkidayo', text: 'Starboy in the building!', verified: true, region: 'africa', seed: 'wizkid' },
-            { user: 'davido', text: 'OBO worldwide!', verified: true, region: 'africa', seed: 'davido' },
-            { user: 'tiwasavage', text: 'Queen vibes!', verified: true, region: 'africa', seed: 'tiwa' },
-            { user: 'yemialade', text: 'African queen!', verified: true, region: 'africa', seed: 'yemi' },
-            { user: 'sautisol', text: 'East African love!', verified: true, region: 'africa', seed: 'sauti' },
-            { user: 'diamondplatnumz', text: 'Wasafi forever!', verified: true, region: 'africa', seed: 'diamond' },
-            { user: 'stonebwoy', text: 'BHIM nation!', verified: true, region: 'africa', seed: 'stone' },
-            { user: 'shattawalenima', text: 'SM4LYF!', verified: true, region: 'africa', seed: 'shatta' },
-            { user: 'nasty_csa', text: 'Zulu man with some power!', verified: true, region: 'africa', seed: 'nasty' },
-            { user: 'casspernyovest', text: 'Fill up the stadium!', verified: true, region: 'africa', seed: 'cassper' },
-            { user: 'blackcoffee', text: 'Deep house vibes!', verified: true, region: 'africa', seed: 'coffee' },
+            // AFRICAN CELEBRITIES - REAL PICS
+            { user: 'burnaboygram', text: 'Big vibes only!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Burna_Boy_%282019%29.jpg/440px-Burna_Boy_%282019%29.jpg' },
+            { user: 'wizkidayo', text: 'Starboy in the building!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Wizkid_at_Iyanya%27s_album_launch_concert%2C_2013.jpg/440px-Wizkid_at_Iyanya%27s_album_launch_concert%2C_2013.jpg' },
+            { user: 'davido', text: 'OBO worldwide!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Davido_-_2018_%28cropped%29.jpg/440px-Davido_-_2018_%28cropped%29.jpg' },
+            { user: 'tiwasavage', text: 'Queen vibes!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Tiwa_Savage.jpg/440px-Tiwa_Savage.jpg' },
+            { user: 'yemialade', text: 'African queen!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Yemi_Alade_2015.jpg/440px-Yemi_Alade_2015.jpg' },
+            { user: 'sautisol', text: 'East African love!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Sauti_Sol.jpg/440px-Sauti_Sol.jpg' },
+            { user: 'diamondplatnumz', text: 'Wasafi forever!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Diamond_Platinumz.jpg/440px-Diamond_Platinumz.jpg' },
+            { user: 'stonebwoy', text: 'BHIM nation!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Stonebwoy.jpg/440px-Stonebwoy.jpg' },
+            { user: 'shattawalenima', text: 'SM4LYF!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Shatta_Wale.jpg/440px-Shatta_Wale.jpg' },
+            { user: 'nasty_csa', text: 'Zulu man with some power!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Nasty_C.jpg/440px-Nasty_C.jpg' },
+            { user: 'casspernyovest', text: 'Fill up the stadium!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Cassper_Nyovest.jpg/440px-Cassper_Nyovest.jpg' },
+            { user: 'blackcoffee', text: 'Deep house vibes!', verified: true, region: 'africa', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Black_Coffee.jpg/440px-Black_Coffee.jpg' },
             
-            // EUROPEAN CELEBRITIES
-            { user: 'cristiano', text: 'Siuuu!', verified: true, region: 'europe', seed: 'cr7' },
-            { user: 'leomessi', text: 'Vamos!', verified: true, region: 'europe', seed: 'messi' },
-            { user: 'neymarjr', text: 'Jogo bonito!', verified: true, region: 'europe', seed: 'neymar' },
-            { user: 'k.mbappe', text: 'Speed demon!', verified: true, region: 'europe', seed: 'mbappe' },
-            { user: 'zayn', text: 'Pillowtalk vibes', verified: true, region: 'europe', seed: 'zayn' },
-            { user: 'harrystyles', text: 'Watermelon sugar!', verified: true, region: 'europe', seed: 'harry' },
-            { user: 'dualipa', text: 'Levitating!', verified: true, region: 'europe', seed: 'dua' },
-            { user: 'edsheeran', text: 'Shape of you!', verified: true, region: 'europe', seed: 'ed' },
-            { user: 'adele', text: 'Hello from the other side', verified: true, region: 'europe', seed: 'adele' },
-            { user: 'samsmith', text: 'Stay with me', verified: true, region: 'europe', seed: 'sam' },
-            { user: 'jbalvin', text: 'Mi gente!', verified: true, region: 'europe', seed: 'jbalvin' },
-            { user: 'karolg', text: 'Bichota!', verified: true, region: 'europe', seed: 'karol' },
+            // EUROPEAN CELEBRITIES - REAL PICS
+            { user: 'cristiano', text: 'Siuuu!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/440px-Cristiano_Ronaldo_2018.jpg' },
+            { user: 'leomessi', text: 'Vamos!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/440px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg' },
+            { user: 'neymarjr', text: 'Jogo bonito!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg/440px-20180610_FIFA_Friendly_Match_Austria_vs._Brazil_Neymar_850_1705.jpg' },
+            { user: 'k.mbappe', text: 'Speed demon!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%93129_%28cropped%29.jpg/440px-2019-07-17_SG_Dynamo_Dresden_vs._Paris_Saint-Germain_by_Sandro_Halank%E2%80%93129_%28cropped%29.jpg' },
+            { user: 'zayn', text: 'Pillowtalk vibes', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Zayn_Wiki_%28cropped%29.jpg/440px-Zayn_Wiki_%28cropped%29.jpg' },
+            { user: 'harrystyles', text: 'Watermelon sugar!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Harry_Styles_November_2014.jpg/440px-Harry_Styles_November_2014.jpg' },
+            { user: 'dualipa', text: 'Levitating!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Dua_Lipa_2018.jpg/440px-Dua_Lipa_2018.jpg' },
+            { user: 'edsheeran', text: 'Shape of you!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Ed_Sheeran-6886_%28cropped%29.jpg/440px-Ed_Sheeran-6886_%28cropped%29.jpg' },
+            { user: 'adele', text: 'Hello from the other side', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Adele_2016.jpg/440px-Adele_2016.jpg' },
+            { user: 'samsmith', text: 'Stay with me', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Sam_Smith_2015.jpg/440px-Sam_Smith_2015.jpg' },
+            { user: 'jbalvin', text: 'Mi gente!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/J_Balvin_2018.jpg/440px-J_Balvin_2018.jpg' },
+            { user: 'karolg', text: 'Bichota!', verified: true, region: 'europe', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Karol_G_2018.jpg/440px-Karol_G_2018.jpg' },
             
-            // AMERICAN CELEBRITIES
-            { user: 'therock', text: 'The most electrifying!', verified: true, region: 'america', seed: 'rock' },
-            { user: 'beyonce', text: 'Beysus is watching', verified: true, region: 'america', seed: 'bey' },
-            { user: 'kyliejenner', text: 'Rise and shine', verified: true, region: 'america', seed: 'kylie' },
-            { user: 'kimkardashian', text: 'Okurrr', verified: true, region: 'america', seed: 'kim' },
-            { user: 'kendalljenner', text: 'Love this energy', verified: true, region: 'america', seed: 'kendall' },
-            { user: 'badbunny', text: 'Me porto bonito', verified: true, region: 'america', seed: 'bunny' },
-            { user: 'drake', text: 'Certified Lover Boy', verified: true, region: 'america', seed: 'drake' },
-            { user: 'kanyewest', text: 'Yeezy season approaching', verified: true, region: 'america', seed: 'ye' },
-            { user: 'travisscott', text: 'Its lit!', verified: true, region: 'america', seed: 'travis' },
-            { user: 'billieeilish', text: 'Ocean eyes', verified: true, region: 'america', seed: 'billie' },
-            { user: 'arianagrande', text: 'Thank u, next', verified: true, region: 'america', seed: 'ariana' },
-            { user: 'taylorswift', text: 'Shake it off!', verified: true, region: 'america', seed: 'taylor' },
+            // AMERICAN CELEBRITIES - REAL PICS
+            { user: 'therock', text: 'The most electrifying!', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014.jpg/440px-Dwayne_Johnson_2014.jpg' },
+            { user: 'beyonce', text: 'Beysus is watching', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Beyonc%C3%A9_at_The_Lion_King_European_Premiere_2019.png/440px-Beyonc%C3%A9_at_The_Lion_King_European_Premiere_2019.png' },
+            { user: 'kyliejenner', text: 'Rise and shine', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Kylie_Jenner_2019.jpg/440px-Kylie_Jenner_2019.jpg' },
+            { user: 'kimkardashian', text: 'Okurrr', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kim_Kardashian_2019.jpg/440px-Kim_Kardashian_2019.jpg' },
+            { user: 'kendalljenner', text: 'Love this energy', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Kendall_Jenner_2019.jpg/440px-Kendall_Jenner_2019.jpg' },
+            { user: 'badbunny', text: 'Me porto bonito', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Bad_Bunny_2019.jpg/440px-Bad_Bunny_2019.jpg' },
+            { user: 'drake', text: 'Certified Lover Boy', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Drake_July_2016.jpg/440px-Drake_July_2016.jpg' },
+            { user: 'kanyewest', text: 'Yeezy season approaching', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Kanye_West_2019.jpg/440px-Kanye_West_2019.jpg' },
+            { user: 'travisscott', text: 'Its lit!', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Travis_Scott_2019.jpg/440px-Travis_Scott_2019.jpg' },
+            { user: 'billieeilish', text: 'Ocean eyes', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Billie_Eilish_2019.jpg/440px-Billie_Eilish_2019.jpg' },
+            { user: 'arianagrande', text: 'Thank u, next', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Ariana_Grande_2019.jpg/440px-Ariana_Grande_2019.jpg' },
+            { user: 'taylorswift', text: 'Shake it off!', verified: true, region: 'america', pic: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Taylor_Swift_2019.jpg/440px-Taylor_Swift_2019.jpg' },
             
-            // REGULAR PEOPLE (AFRICA)
-            { user: 'amara_nigeria', text: 'Greetings from Lagos!', verified: false, region: 'africa', seed: 'amara' },
-            { user: 'kofi_ghana', text: 'Accra representing!', verified: false, region: 'africa', seed: 'kofi' },
-            { user: 'zara_kenya', text: 'Nairobi loves you!', verified: false, region: 'africa', seed: 'zara' },
-            { user: 'tendai_zim', text: 'Harare in the house!', verified: false, region: 'africa', seed: 'tendai' },
-            { user: 'amina_morocco', text: 'Casablanca vibes!', verified: false, region: 'africa', seed: 'amina' },
-            { user: 'jean_rwanda', text: 'Kigali says hi!', verified: false, region: 'africa', seed: 'jean' },
-            { user: 'fatou_senegal', text: 'Dakar forever!', verified: false, region: 'africa', seed: 'fatou' },
-            { user: 'youssef_egypt', text: 'Cairo checking in!', verified: false, region: 'africa', seed: 'youssef' },
+            // REGULAR PEOPLE (AFRICA) - GENERIC PICS
+            { user: 'amara_nigeria', text: 'Greetings from Lagos!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'kofi_ghana', text: 'Accra representing!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'zara_kenya', text: 'Nairobi loves you!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'tendai_zim', text: 'Harare in the house!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'amina_morocco', text: 'Casablanca vibes!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'jean_rwanda', text: 'Kigali says hi!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'fatou_senegal', text: 'Dakar forever!', verified: false, region: 'africa', pic: 'generic' },
+            { user: 'youssef_egypt', text: 'Cairo checking in!', verified: false, region: 'africa', pic: 'generic' },
             
-            // REGULAR PEOPLE (EUROPE)
-            { user: 'luca_italy', text: 'Ciao from Rome!', verified: false, region: 'europe', seed: 'luca' },
-            { user: 'sophie_france', text: 'Bonjour from Paris!', verified: false, region: 'europe', seed: 'sophie' },
-            { user: 'hans_germany', text: 'Grüße aus Berlin!', verified: false, region: 'europe', seed: 'hans' },
-            { user: 'emma_uk', text: 'London calling!', verified: false, region: 'europe', seed: 'emma' },
-            { user: 'carlos_spain', text: 'Hola from Madrid!', verified: false, region: 'europe', seed: 'carlos' },
-            { user: 'anastasia_russia', text: 'Moscow loves you!', verified: false, region: 'europe', seed: 'anastasia' },
-            { user: 'lars_sweden', text: 'Stockholm here!', verified: false, region: 'europe', seed: 'lars' },
-            { user: 'nora_norway', text: 'Oslo represent!', verified: false, region: 'europe', seed: 'nora' },
+            // REGULAR PEOPLE (EUROPE) - GENERIC PICS
+            { user: 'luca_italy', text: 'Ciao from Rome!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'sophie_france', text: 'Bonjour from Paris!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'hans_germany', text: 'Grüße aus Berlin!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'emma_uk', text: 'London calling!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'carlos_spain', text: 'Hola from Madrid!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'anastasia_russia', text: 'Moscow loves you!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'lars_sweden', text: 'Stockholm here!', verified: false, region: 'europe', pic: 'generic' },
+            { user: 'nora_norway', text: 'Oslo represent!', verified: false, region: 'europe', pic: 'generic' },
             
-            // REGULAR PEOPLE (AMERICAS)
-            { user: 'jake_texas', text: 'Texas forever!', verified: false, region: 'america', seed: 'jake' },
-            { user: 'maria_brazil', text: 'São Paulo in the chat!', verified: false, region: 'america', seed: 'maria' },
-            { user: 'diego_mexico', text: 'CDMX representando!', verified: false, region: 'america', seed: 'diego' },
-            { user: 'sarah_canada', text: 'Toronto checking in!', verified: false, region: 'america', seed: 'sarah' },
-            { user: 'juan_colombia', text: 'Bogotá loves you!', verified: false, region: 'america', seed: 'juan' },
-            { user: 'camila_argentina', text: 'Buenos Aires vibes!', verified: false, region: 'america', seed: 'camila' },
-            { user: 'pedro_chile', text: 'Santiago presente!', verified: false, region: 'america', seed: 'pedro' },
-            { user: 'isabella_peru', text: 'Lima says hello!', verified: false, region: 'america', seed: 'isabella' },
+            // REGULAR PEOPLE (AMERICAS) - GENERIC PICS
+            { user: 'jake_texas', text: 'Texas forever!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'maria_brazil', text: 'São Paulo in the chat!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'diego_mexico', text: 'CDMX representando!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'sarah_canada', text: 'Toronto checking in!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'juan_colombia', text: 'Bogotá loves you!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'camila_argentina', text: 'Buenos Aires vibes!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'pedro_chile', text: 'Santiago presente!', verified: false, region: 'america', pic: 'generic' },
+            { user: 'isabella_peru', text: 'Lima says hello!', verified: false, region: 'america', pic: 'generic' },
             
-            // REGULAR PEOPLE (ASIA)
-            { user: 'wei_china', text: 'Beijing loves you!', verified: false, region: 'asia', seed: 'wei' },
-            { user: 'sakura_japan', text: 'Tokyo in the house!', verified: false, region: 'asia', seed: 'sakura' },
-            { user: 'raj_india', text: 'Mumbai representing!', verified: false, region: 'asia', seed: 'raj' },
-            { user: 'min_korea', text: 'Seoul says hi!', verified: false, region: 'asia', seed: 'min' },
-            { user: 'ahmed_uae', text: 'Dubai checking in!', verified: false, region: 'asia', seed: 'ahmed' },
-            { user: 'priya_india', text: 'Delhi loves this!', verified: false, region: 'asia', seed: 'priya' },
-            { user: 'tuan_vietnam', text: 'Hanoi represent!', verified: false, region: 'asia', seed: 'tuan' },
-            { user: 'nur_malaysia', text: 'Kuala Lumpur here!', verified: false, region: 'asia', seed: 'nur' },
+            // REGULAR PEOPLE (ASIA) - GENERIC PICS
+            { user: 'wei_china', text: 'Beijing loves you!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'sakura_japan', text: 'Tokyo in the house!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'raj_india', text: 'Mumbai representing!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'min_korea', text: 'Seoul says hi!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'ahmed_uae', text: 'Dubai checking in!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'priya_india', text: 'Delhi loves this!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'tuan_vietnam', text: 'Hanoi represent!', verified: false, region: 'asia', pic: 'generic' },
+            { user: 'nur_malaysia', text: 'Kuala Lumpur here!', verified: false, region: 'asia', pic: 'generic' },
         ];
         
         const commentsContainer = document.getElementById('comments');
+        
+        function getGenericAvatar(seed) {
+            const colors = ['667eea','764ba2','f093fb','f5576c','4facfe','00f2fe','43e97b','38f9d7','fa709a','fee140','30cfd0','330867'];
+            const c1 = colors[Math.floor(Math.random() * colors.length)];
+            const c2 = colors[Math.floor(Math.random() * colors.length)];
+            return `linear-gradient(135deg, #${c1}, #${c2})`;
+        }
         
         function addComment(data) {
             const div = document.createElement('div');
@@ -677,10 +689,17 @@ html_content = '''<!DOCTYPE html>
             const verifiedBadge = data.verified 
                 ? '<span class="verified-comment"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>' 
                 : '';
+            
+            let avatarHTML;
+            if (data.pic === 'generic') {
+                const bg = getGenericAvatar(data.user);
+                avatarHTML = `<div class="comment-avatar" style="background:${bg};"></div>`;
+            } else {
+                avatarHTML = `<div class="comment-avatar"><img src="${data.pic}" alt="${data.user}" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(45deg,#667eea,#764ba2)'"></div>`;
+            }
+            
             div.innerHTML = `
-                <div class="comment-avatar">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffdfbf,ffd5dc" alt="${data.user}" onerror="this.style.display='none'">
-                </div>
+                ${avatarHTML}
                 <div class="comment-body">
                     <div class="comment-username">${data.user}${verifiedBadge}</div>
                     <div class="comment-text">${data.text}</div>
@@ -788,7 +807,7 @@ html_content = '''<!DOCTYPE html>
                     text: commentInput.value.trim(),
                     verified: false,
                     region: 'local',
-                    seed: 'user' + Date.now()
+                    pic: 'generic'
                 });
                 commentInput.value = '';
             }
