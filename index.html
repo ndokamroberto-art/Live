@@ -180,10 +180,10 @@ html_content = '''<!DOCTYPE html>
             flex-direction: column;
             justify-content: flex-end;
             gap: 6px;
-            height: 35vh;
+            height: 38vh;
             overflow: hidden;
-            mask-image: linear-gradient(to bottom, transparent 0%, black 12%);
-            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
             pointer-events: none;
         }
         
@@ -191,7 +191,7 @@ html_content = '''<!DOCTYPE html>
             display: flex;
             align-items: flex-start;
             gap: 8px;
-            animation: slideIn 0.35s ease;
+            animation: slideIn 0.4s ease;
             flex-shrink: 0;
             pointer-events: auto;
         }
@@ -199,7 +199,7 @@ html_content = '''<!DOCTYPE html>
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(12px);
             }
             to {
                 opacity: 1;
@@ -208,12 +208,12 @@ html_content = '''<!DOCTYPE html>
         }
         
         .comment-avatar {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             flex-shrink: 0;
             overflow: hidden;
-            border: 1.5px solid rgba(255,255,255,0.3);
+            border: 1.5px solid rgba(255,255,255,0.25);
             background: linear-gradient(45deg, #667eea, #764ba2);
         }
         
@@ -225,7 +225,7 @@ html_content = '''<!DOCTYPE html>
         }
         
         .comment-body {
-            background: rgba(0,0,0,0.35);
+            background: rgba(0,0,0,0.38);
             padding: 5px 11px;
             border-radius: 14px;
             backdrop-filter: blur(6px);
@@ -246,6 +246,18 @@ html_content = '''<!DOCTYPE html>
             word-wrap: break-word;
         }
         
+        .verified-comment {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 3px;
+        }
+        
+        .verified-comment svg {
+            width: 10px;
+            height: 10px;
+            fill: #3897f0;
+        }
+        
         .hearts-column {
             position: fixed;
             right: 10px;
@@ -261,6 +273,20 @@ html_content = '''<!DOCTYPE html>
             width: 22px;
             height: 22px;
             opacity: 0.75;
+            animation: heartPulse 1.5s ease-in-out infinite;
+        }
+        
+        .heart:nth-child(2) { animation-delay: 0.2s; }
+        .heart:nth-child(3) { animation-delay: 0.4s; }
+        .heart:nth-child(4) { animation-delay: 0.6s; }
+        .heart:nth-child(5) { animation-delay: 0.8s; }
+        .heart:nth-child(6) { animation-delay: 1.0s; }
+        .heart:nth-child(7) { animation-delay: 1.2s; }
+        .heart:nth-child(8) { animation-delay: 1.4s; }
+        
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); opacity: 0.75; }
+            50% { transform: scale(1.15); opacity: 0.95; }
         }
         
         .heart svg {
@@ -423,9 +449,33 @@ html_content = '''<!DOCTYPE html>
                 opacity: 0.9;
             }
             100% {
-                transform: translateY(-250px) scale(0.4) rotate(20deg);
+                transform: translateY(-280px) scale(0.3) rotate(25deg);
                 opacity: 0;
             }
+        }
+        
+        .gift-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+            animation: giftPop 2s ease-out forwards;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+        }
+        
+        @keyframes giftPop {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -60%) scale(0.9); }
         }
     </style>
 </head>
@@ -456,7 +506,7 @@ html_content = '''<!DOCTYPE html>
         <div style="display: flex; align-items: center; gap: 10px;">
             <div class="viewer-count">
                 <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                <span id="viewer-count">1,487</span>
+                <span id="viewer-count">12.4k</span>
             </div>
             <div class="close-btn" onclick="window.close()">
                 <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -518,49 +568,105 @@ html_content = '''<!DOCTYPE html>
         
         startCamera();
         
-        // ===== DYNAMIC VIEWER COUNT =====
-        let viewerCount = 1487;
+        // ===== DYNAMIC VIEWER COUNT (10k+) =====
+        let viewerCount = 12400;
         const viewerEl = document.getElementById('viewer-count');
         
         function formatCount(n) {
             if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
-            if (n >= 1000) return n.toLocaleString();
+            if (n >= 1000) return (n/1000).toFixed(1) + 'k';
             return n.toString();
         }
         
         setInterval(() => {
-            const change = Math.floor(Math.random() * 15) - 5;
-            viewerCount = Math.max(100, viewerCount + change);
+            const change = Math.floor(Math.random() * 80) - 20;
+            viewerCount = Math.max(10000, viewerCount + change);
             viewerEl.textContent = formatCount(viewerCount);
-        }, 2000);
+        }, 1500);
         
-        // ===== DYNAMIC COMMENTS WITH PROFILE PICS =====
+        // ===== REALISTIC COMMENTS: CELEBRITIES + REGULAR PEOPLE =====
         const commentData = [
-            { user: 'sweetgurl', text: 'Hey! How are you doing today?', seed: 'a1' },
-            { user: 'dark_emeralds', text: 'Miss seeing you go Live!', seed: 'b2' },
-            { user: 'photosbyean', text: 'bought a badge', seed: 'c3' },
-            { user: 'hey_sarah2002', text: 'Welcome!', seed: 'd4' },
-            { user: 'jake_miles', text: 'First time catching your live!', seed: 'e5' },
-            { user: 'maria_lopez', text: 'You look amazing today!', seed: 'f6' },
-            { user: 'tommy_boy_23', text: 'Where are you streaming from?', seed: 'g7' },
-            { user: 'lisa_cooks_daily', text: 'Can you do a Q&A next time?', seed: 'h8' },
-            { user: 'dave_runs_5k', text: 'Keep up the great work!', seed: 'i9' },
-            { user: 'anna_style_blog', text: 'Love the background!', seed: 'j10' },
-            { user: 'chris_gym_rat', text: 'Lets goooo!', seed: 'k11' },
-            { user: 'jenna_travels', text: 'Cheers from California!', seed: 'l12' },
-            { user: 'mike_gaming', text: 'This is so cool!', seed: 'm13' },
-            { user: 'sophie_reads', text: 'How long will you be live?', seed: 'n14' },
-            { user: 'ryan_codes', text: 'Big fan of your content!', seed: 'o15' },
-            { user: 'emma_dances', text: 'Can you shout me out?', seed: 'p16' },
-            { user: 'alex_photos', text: 'The lighting is perfect!', seed: 'q17' },
-            { user: 'nate_fitness', text: 'Workout tips please!', seed: 'r18' },
-            { user: 'olivia_art', text: 'Your energy is contagious!', seed: 's19' },
-            { user: 'kevin_music', text: 'Sing something for us!', seed: 't20' },
-            { user: 'zoe_fashion', text: 'Where did you get that top?', seed: 'u21' },
-            { user: 'leo_skates', text: 'Missed your last live!', seed: 'v22' },
-            { user: 'mia_creates', text: 'You inspire me so much!', seed: 'w23' },
-            { user: 'noah_travels', text: 'Greetings from Tokyo!', seed: 'x24' },
-            { user: 'ava_pets', text: 'Show us your dog!', seed: 'y25' },
+            // AFRICAN CELEBRITIES
+            { user: 'burnaboygram', text: 'Big vibes only!', verified: true, region: 'africa', seed: 'burna' },
+            { user: 'wizkidayo', text: 'Starboy in the building!', verified: true, region: 'africa', seed: 'wizkid' },
+            { user: 'davido', text: 'OBO worldwide!', verified: true, region: 'africa', seed: 'davido' },
+            { user: 'tiwasavage', text: 'Queen vibes!', verified: true, region: 'africa', seed: 'tiwa' },
+            { user: 'yemialade', text: 'African queen!', verified: true, region: 'africa', seed: 'yemi' },
+            { user: 'sautisol', text: 'East African love!', verified: true, region: 'africa', seed: 'sauti' },
+            { user: 'diamondplatnumz', text: 'Wasafi forever!', verified: true, region: 'africa', seed: 'diamond' },
+            { user: 'stonebwoy', text: 'BHIM nation!', verified: true, region: 'africa', seed: 'stone' },
+            { user: 'shattawalenima', text: 'SM4LYF!', verified: true, region: 'africa', seed: 'shatta' },
+            { user: 'nasty_csa', text: 'Zulu man with some power!', verified: true, region: 'africa', seed: 'nasty' },
+            { user: 'casspernyovest', text: 'Fill up the stadium!', verified: true, region: 'africa', seed: 'cassper' },
+            { user: 'blackcoffee', text: 'Deep house vibes!', verified: true, region: 'africa', seed: 'coffee' },
+            
+            // EUROPEAN CELEBRITIES
+            { user: 'cristiano', text: 'Siuuu!', verified: true, region: 'europe', seed: 'cr7' },
+            { user: 'leomessi', text: 'Vamos!', verified: true, region: 'europe', seed: 'messi' },
+            { user: 'neymarjr', text: 'Jogo bonito!', verified: true, region: 'europe', seed: 'neymar' },
+            { user: 'k.mbappe', text: 'Speed demon!', verified: true, region: 'europe', seed: 'mbappe' },
+            { user: 'zayn', text: 'Pillowtalk vibes', verified: true, region: 'europe', seed: 'zayn' },
+            { user: 'harrystyles', text: 'Watermelon sugar!', verified: true, region: 'europe', seed: 'harry' },
+            { user: 'dualipa', text: 'Levitating!', verified: true, region: 'europe', seed: 'dua' },
+            { user: 'edsheeran', text: 'Shape of you!', verified: true, region: 'europe', seed: 'ed' },
+            { user: 'adele', text: 'Hello from the other side', verified: true, region: 'europe', seed: 'adele' },
+            { user: 'samsmith', text: 'Stay with me', verified: true, region: 'europe', seed: 'sam' },
+            { user: 'jbalvin', text: 'Mi gente!', verified: true, region: 'europe', seed: 'jbalvin' },
+            { user: 'karolg', text: 'Bichota!', verified: true, region: 'europe', seed: 'karol' },
+            
+            // AMERICAN CELEBRITIES
+            { user: 'therock', text: 'The most electrifying!', verified: true, region: 'america', seed: 'rock' },
+            { user: 'beyonce', text: 'Beysus is watching', verified: true, region: 'america', seed: 'bey' },
+            { user: 'kyliejenner', text: 'Rise and shine', verified: true, region: 'america', seed: 'kylie' },
+            { user: 'kimkardashian', text: 'Okurrr', verified: true, region: 'america', seed: 'kim' },
+            { user: 'kendalljenner', text: 'Love this energy', verified: true, region: 'america', seed: 'kendall' },
+            { user: 'badbunny', text: 'Me porto bonito', verified: true, region: 'america', seed: 'bunny' },
+            { user: 'drake', text: 'Certified Lover Boy', verified: true, region: 'america', seed: 'drake' },
+            { user: 'kanyewest', text: 'Yeezy season approaching', verified: true, region: 'america', seed: 'ye' },
+            { user: 'travisscott', text: 'Its lit!', verified: true, region: 'america', seed: 'travis' },
+            { user: 'billieeilish', text: 'Ocean eyes', verified: true, region: 'america', seed: 'billie' },
+            { user: 'arianagrande', text: 'Thank u, next', verified: true, region: 'america', seed: 'ariana' },
+            { user: 'taylorswift', text: 'Shake it off!', verified: true, region: 'america', seed: 'taylor' },
+            
+            // REGULAR PEOPLE (AFRICA)
+            { user: 'amara_nigeria', text: 'Greetings from Lagos!', verified: false, region: 'africa', seed: 'amara' },
+            { user: 'kofi_ghana', text: 'Accra representing!', verified: false, region: 'africa', seed: 'kofi' },
+            { user: 'zara_kenya', text: 'Nairobi loves you!', verified: false, region: 'africa', seed: 'zara' },
+            { user: 'tendai_zim', text: 'Harare in the house!', verified: false, region: 'africa', seed: 'tendai' },
+            { user: 'amina_morocco', text: 'Casablanca vibes!', verified: false, region: 'africa', seed: 'amina' },
+            { user: 'jean_rwanda', text: 'Kigali says hi!', verified: false, region: 'africa', seed: 'jean' },
+            { user: 'fatou_senegal', text: 'Dakar forever!', verified: false, region: 'africa', seed: 'fatou' },
+            { user: 'youssef_egypt', text: 'Cairo checking in!', verified: false, region: 'africa', seed: 'youssef' },
+            
+            // REGULAR PEOPLE (EUROPE)
+            { user: 'luca_italy', text: 'Ciao from Rome!', verified: false, region: 'europe', seed: 'luca' },
+            { user: 'sophie_france', text: 'Bonjour from Paris!', verified: false, region: 'europe', seed: 'sophie' },
+            { user: 'hans_germany', text: 'Grüße aus Berlin!', verified: false, region: 'europe', seed: 'hans' },
+            { user: 'emma_uk', text: 'London calling!', verified: false, region: 'europe', seed: 'emma' },
+            { user: 'carlos_spain', text: 'Hola from Madrid!', verified: false, region: 'europe', seed: 'carlos' },
+            { user: 'anastasia_russia', text: 'Moscow loves you!', verified: false, region: 'europe', seed: 'anastasia' },
+            { user: 'lars_sweden', text: 'Stockholm here!', verified: false, region: 'europe', seed: 'lars' },
+            { user: 'nora_norway', text: 'Oslo represent!', verified: false, region: 'europe', seed: 'nora' },
+            
+            // REGULAR PEOPLE (AMERICAS)
+            { user: 'jake_texas', text: 'Texas forever!', verified: false, region: 'america', seed: 'jake' },
+            { user: 'maria_brazil', text: 'São Paulo in the chat!', verified: false, region: 'america', seed: 'maria' },
+            { user: 'diego_mexico', text: 'CDMX representando!', verified: false, region: 'america', seed: 'diego' },
+            { user: 'sarah_canada', text: 'Toronto checking in!', verified: false, region: 'america', seed: 'sarah' },
+            { user: 'juan_colombia', text: 'Bogotá loves you!', verified: false, region: 'america', seed: 'juan' },
+            { user: 'camila_argentina', text: 'Buenos Aires vibes!', verified: false, region: 'america', seed: 'camila' },
+            { user: 'pedro_chile', text: 'Santiago presente!', verified: false, region: 'america', seed: 'pedro' },
+            { user: 'isabella_peru', text: 'Lima says hello!', verified: false, region: 'america', seed: 'isabella' },
+            
+            // REGULAR PEOPLE (ASIA)
+            { user: 'wei_china', text: 'Beijing loves you!', verified: false, region: 'asia', seed: 'wei' },
+            { user: 'sakura_japan', text: 'Tokyo in the house!', verified: false, region: 'asia', seed: 'sakura' },
+            { user: 'raj_india', text: 'Mumbai representing!', verified: false, region: 'asia', seed: 'raj' },
+            { user: 'min_korea', text: 'Seoul says hi!', verified: false, region: 'asia', seed: 'min' },
+            { user: 'ahmed_uae', text: 'Dubai checking in!', verified: false, region: 'asia', seed: 'ahmed' },
+            { user: 'priya_india', text: 'Delhi loves this!', verified: false, region: 'asia', seed: 'priya' },
+            { user: 'tuan_vietnam', text: 'Hanoi represent!', verified: false, region: 'asia', seed: 'tuan' },
+            { user: 'nur_malaysia', text: 'Kuala Lumpur here!', verified: false, region: 'asia', seed: 'nur' },
         ];
         
         const commentsContainer = document.getElementById('comments');
@@ -568,14 +674,15 @@ html_content = '''<!DOCTYPE html>
         function addComment(data) {
             const div = document.createElement('div');
             div.className = 'comment';
-            const bgColors = ['b6e3f4','c0aede','d1d4f9','ffdfbf','ffd5dc','c0aede','b6e3f4','d1d4f9'];
-            const bg = bgColors[Math.floor(Math.random() * bgColors.length)];
+            const verifiedBadge = data.verified 
+                ? '<span class="verified-comment"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span>' 
+                : '';
             div.innerHTML = `
                 <div class="comment-avatar">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.seed}&backgroundColor=${bg}" alt="${data.user}" onerror="this.style.display='none'">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=${data.seed}&backgroundColor=b6e3f4,c0aede,d1d4f9,ffdfbf,ffd5dc" alt="${data.user}" onerror="this.style.display='none'">
                 </div>
                 <div class="comment-body">
-                    <div class="comment-username">${data.user}</div>
+                    <div class="comment-username">${data.user}${verifiedBadge}</div>
                     <div class="comment-text">${data.text}</div>
                 </div>
             `;
@@ -586,21 +693,29 @@ html_content = '''<!DOCTYPE html>
             }
         }
         
-        // Initial comments
-        commentData.slice(0, 4).forEach(addComment);
+        // Initial 4 comments
+        const initial = [
+            commentData[0], commentData[12], commentData[24], commentData[36]
+        ];
+        initial.forEach(addComment);
         
-        // Add new comment every 2-4 seconds
-        setInterval(() => {
-            const random = commentData[Math.floor(Math.random() * commentData.length)];
-            addComment(random);
-        }, 2500);
+        // Add new comment every 1.5-3 seconds with realistic timing
+        function scheduleNextComment() {
+            const delay = 1500 + Math.random() * 2000;
+            setTimeout(() => {
+                const random = commentData[Math.floor(Math.random() * commentData.length)];
+                addComment(random);
+                scheduleNextComment();
+            }, delay);
+        }
+        scheduleNextComment();
         
         // ===== DYNAMIC HEARTS COLUMN =====
         const heartsColumn = document.getElementById('hearts-column');
         
         function renderHearts() {
             heartsColumn.innerHTML = '';
-            const count = 7 + Math.floor(Math.random() * 4);
+            const count = 6 + Math.floor(Math.random() * 5);
             for (let i = 0; i < count; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
@@ -610,27 +725,59 @@ html_content = '''<!DOCTYPE html>
         }
         
         renderHearts();
-        setInterval(renderHearts, 4000);
+        setInterval(renderHearts, 3000);
         
         // ===== FLOATING HEARTS =====
         const likeBtn = document.getElementById('like-btn');
         
         likeBtn.addEventListener('click', () => {
             spawnFloatingHeart();
+            spawnFloatingHeart();
         });
         
         function spawnFloatingHeart() {
             const heart = document.createElement('div');
             heart.className = 'floating-heart';
-            heart.style.right = (10 + Math.random() * 30) + 'px';
+            heart.style.right = (8 + Math.random() * 40) + 'px';
+            heart.style.bottom = (110 + Math.random() * 20) + 'px';
             heart.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 2600);
         }
         
+        // Auto-spawn floating hearts like real live
         setInterval(() => {
-            if (Math.random() > 0.6) spawnFloatingHeart();
-        }, 1500);
+            if (Math.random() > 0.3) spawnFloatingHeart();
+        }, 800);
+        
+        // ===== GIFT/BADGE POPUPS =====
+        const giftMessages = [
+            'burnaboygram bought a badge',
+            'wizkidayo bought a badge',
+            'davido bought a badge',
+            'cristiano bought a badge',
+            'beyonce bought a badge',
+            'drake bought a badge',
+            'amara_nigeria bought a badge',
+            'luca_italy bought a badge',
+            'jake_texas bought a badge',
+            'wei_china bought a badge',
+        ];
+        
+        function showGiftPopup(text) {
+            const popup = document.createElement('div');
+            popup.className = 'gift-popup';
+            popup.textContent = text;
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 2200);
+        }
+        
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const msg = giftMessages[Math.floor(Math.random() * giftMessages.length)];
+                showGiftPopup(msg);
+            }
+        }, 8000);
         
         // ===== COMMENT INPUT =====
         const commentInput = document.getElementById('comment-input');
@@ -639,6 +786,8 @@ html_content = '''<!DOCTYPE html>
                 addComment({
                     user: 'you',
                     text: commentInput.value.trim(),
+                    verified: false,
+                    region: 'local',
                     seed: 'user' + Date.now()
                 });
                 commentInput.value = '';
