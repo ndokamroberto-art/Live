@@ -105,20 +105,22 @@ html_content = '''<!DOCTYPE html>
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
         
+        /* EXACT IG VERIFIED BADGE */
         .verified-badge {
-            width: 13px;
-            height: 13px;
-            background: #3897f0;
+            width: 14px;
+            height: 14px;
+            background: #0095f6;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.3);
         }
         
         .verified-badge svg {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             fill: #fff;
         }
         
@@ -249,18 +251,23 @@ html_content = '''<!DOCTYPE html>
             word-wrap: break-word;
         }
         
+        /* EXACT IG COMMENT VERIFIED BADGE */
         .verified-comment {
             display: inline-flex;
             align-items: center;
-            width: 10px;
-            height: 10px;
+            justify-content: center;
+            width: 11px;
+            height: 11px;
+            background: #0095f6;
+            border-radius: 50%;
             flex-shrink: 0;
+            border: 0.5px solid rgba(255,255,255,0.2);
         }
         
         .verified-comment svg {
-            width: 100%;
-            height: 100%;
-            fill: #3897f0;
+            width: 7px;
+            height: 7px;
+            fill: #fff;
         }
         
         .hearts-column {
